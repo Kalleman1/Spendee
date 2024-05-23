@@ -6,6 +6,11 @@ namespace SpendeeApi.Data.Services
     {
         private readonly IRepository<User> _userRepository;
 
+        public UserService(IRepository<User> userRepository)
+        {
+            _userRepository = userRepository ?? throw new ArgumentNullException(nameof(userRepository));
+        }
+
         public async Task<User> AuthenticateUserAsync(string email, string password)
         {
             var user = await _userRepository.GetFirstOrDefaultAsync(u => u.Email == email && u.Password == password);
