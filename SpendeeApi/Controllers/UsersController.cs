@@ -8,10 +8,12 @@ namespace SpendeeApi.Controllers
     public class UsersController : ControllerBase
     {
         private readonly IUserService _userService;
+        private readonly ILogger<UsersController> _logger;
 
-        public UsersController(IUserService userService)
+        public UsersController(IUserService userService, ILogger<UsersController> logger)
         {
             _userService = userService;
+            _logger = logger;
         }
 
         [HttpPost("register")]
@@ -24,14 +26,22 @@ namespace SpendeeApi.Controllers
         [HttpPost("login")]
         public async Task<IActionResult> Login([FromBody] User loginUser)
         {
-            User user = await _userService.AuthenticateUserAsync(loginUser.Email, loginUser.Password);
-
-            if (user == null)
+            try
             {
-                return Unauthorized("Your login information was incorrect.");
-            }
+                var user = await _userService.AuthenticateUserAsync(loginUser.Email, loginUser.Password);
 
-            return Ok(new {user.Id, user.Name, user.Email});
+                if (user == null)
+                {
+                    return Unauthorized("Your login information was incorrect.");
+                }
+
+                return Ok(new { user.Id, user.Name, user.Email });
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error occurred while logging in user.");
+                return StatusCode(500, "Internal server error");
+            }
         }
 
     }

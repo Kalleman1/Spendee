@@ -13,7 +13,9 @@ namespace SpendeeApi.Data.Services
 
         public async Task<User> AuthenticateUserAsync(string email, string password)
         {
-            var user = await _userRepository.GetFirstOrDefaultAsync(u => u.Email == email && u.Password == password);
+            var users = await _userRepository.GetAllAsync();
+            var user = users.FirstOrDefault(u => u.Email == email && u.Password == password);
+
             return user;
         }
 

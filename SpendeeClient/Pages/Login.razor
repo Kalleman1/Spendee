@@ -6,21 +6,34 @@
 
 @inject IAuthService AuthService
 
-<EditForm Model="@user" OnValidSubmit="@HandleLogin">
-    <DataAnnotationsValidator />
-    <ValidationSummary />
-
-    <InputText id="email" @bind-Value="user.Email" placeholder="Email" />
-    <InputText id="password" @bind-Value="user.Password" type="password" placeholder="Password" />
-
-    <button type="submit">Login</button>
-
-    <div>
-        <p>Dont have an account yet?</p>
-        <a onclick="@NavigateToRegister">Register</a>
-    </div>
+<div class="login-container">
+    <img src="images/SpendeeLogo.png" alt="Spendee Logo" class="logo-style" />
     
-</EditForm>
+    <div class="form-container">
+        <h3>Log in to your account</h3>
+        <EditForm Model="@user" OnValidSubmit="@HandleLogin">
+            <DataAnnotationsValidator />
+            <ValidationSummary />
+
+            <div class="input-container">
+                <InputText id="email" @bind-Value="user.Email" placeholder="Email" />
+            </div>
+            <div class="input-container">
+                <InputText id="password" @bind-Value="user.Password" type="password" placeholder="Password" />
+            </div>
+            
+            <div class="input-container">
+            <button class="custom-button" type="submit">Login</button>
+            </div>
+
+            <div class="input-container">
+                <p>Dont have an account yet?</p>
+                <a onclick="@NavigateToRegister">Register!</a>
+            </div>
+        </EditForm>
+    </div>
+</div>
+
 
 @code {
     private User user = new User();
