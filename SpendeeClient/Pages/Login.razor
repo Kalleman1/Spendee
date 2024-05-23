@@ -1,0 +1,49 @@
+﻿<!-- Pages/Login.razor -->
+@page "/login"
+
+@using SpendeeClient.Interfaces;
+@using SpendeeClient.Models;
+
+@inject IAuthService AuthService
+
+<EditForm Model="@user" OnValidSubmit="@HandleLogin">
+    <DataAnnotationsValidator />
+    <ValidationSummary />
+
+    <InputText id="email" @bind-Value="user.Email" placeholder="Email" />
+    <InputText id="password" @bind-Value="user.Password" type="password" placeholder="Password" />
+
+    <button type="submit">Login</button>
+
+    <div>
+        <p>Dont have an account yet?</p>
+        <a onclick="@NavigateToRegister">Register</a>
+    </div>
+    
+</EditForm>
+
+@code {
+    private User user = new User();
+
+    private async Task HandleLogin()
+    {
+        var loggedInUser = await AuthService.Login(user);
+        // Handle post-login actions, e.g., navigate to another page
+        if (loggedInUser != null)
+        {
+            NavigationManager.NavigateTo("/home");
+        }
+        else
+        {
+            // Show an error message
+        }
+    }
+
+    private async Task NavigateToRegister()
+    {
+        NavigationManager.NavigateTo("/register");
+    }
+
+    [Inject]
+    private NavigationManager NavigationManager { get; set; }
+}

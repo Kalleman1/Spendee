@@ -1,0 +1,26 @@
+﻿<!-- Pages/Register.razor -->
+@page "/register"
+@using SpendeeClient.Interfaces;
+@using SpendeeClient.Models;
+
+@inject IAuthService AuthService
+
+<EditForm Model="@user" OnValidSubmit="@HandleRegister">
+    <DataAnnotationsValidator />
+    <ValidationSummary />
+
+    <InputText id="name" @bind-Value="user.Name" placeholder="Name" />
+    <InputText id="email" @bind-Value="user.Email" placeholder="Email" />
+    <InputText id="password" @bind-Value="user.Password" type="password" placeholder="Password" />
+
+    <button type="submit">Register</button>
+</EditForm>
+
+@code {
+    private User user = new User();
+
+    private async Task HandleRegister()
+    {
+        var registeredUser = await AuthService.Register(user);
+    }
+}
