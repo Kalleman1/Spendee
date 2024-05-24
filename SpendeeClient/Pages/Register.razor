@@ -5,22 +5,97 @@
 
 @inject IAuthService AuthService
 
-<EditForm Model="@user" OnValidSubmit="@HandleRegister">
-    <DataAnnotationsValidator />
-    <ValidationSummary />
+<div class="login-container">
+    <img src="images/SpendeeLogo.png" alt="Spendee Logo" class="logo-style" />
 
-    <InputText id="name" @bind-Value="user.Name" placeholder="Name" />
-    <InputText id="email" @bind-Value="user.Email" placeholder="Email" />
-    <InputText id="password" @bind-Value="user.Password" type="password" placeholder="Password" />
+    <div class="form-container">
+        <h3>Register a new account</h3>
+        <EditForm Model="@user" OnValidSubmit="@HandleRegister">
+            <DataAnnotationsValidator />
+            <ValidationSummary />
 
-    <button type="submit">Register</button>
-</EditForm>
+            <div class="item-container">
+                <InputText class="input" id="name" @bind-Value="user.Name" placeholder="Name" />
+            </div>
+            <div class="item-container">
+                <InputText class="input" id="email" @bind-Value="user.Email" placeholder="Email" />
+            </div>
+            <div class="item-container">
+                <InputText class="input" id="password" @bind-Value="user.Password" placeholder="Password" />
+            </div>
+
+            @if (errorMessage != string.Empty)
+            {
+                <div class="item-container">
+                    <p class="custom-p error-message">@errorMessage</p>
+                </div>
+            }
+
+
+            <div class="item-container">
+                @if (isLoading)
+                {
+                    <div class="spinner"></div>
+                }
+                else if (successfulRegister)
+                {
+                    <p class="custom-p success-message">User registered successfully!</p>
+                    <button class="custom-button" onclick="@NavigateToLogin">Return to Login</button>
+                }
+                else
+                {
+                    <button class="custom-button" type="submit">Register</button>
+                }
+            </div>
+
+            @if (!successfulRegister)
+            {
+                <div class="item-container">
+                    <p class="custom-p">Already have an account?</p>
+                    <a class="custom-anchor" onclick="@NavigateToLogin">Login</a>
+                </div>
+            }
+
+        </EditForm>
+    </div>
+</div>
 
 @code {
     private User user = new User();
+    private string errorMessage;
+    private bool isLoading = false;
+    private bool successfulRegister = false;
+
+    private async Task NavigateToLogin()
+    {
+        NavigationManager.NavigateTo("/login");
+    }
 
     private async Task HandleRegister()
     {
-        var registeredUser = await AuthService.Register(user);
+        errorMessage = string.Empty;
+        isLoading = true;
+
+        try
+        {
+            await Task.Delay(1000);
+
+            var result = await AuthService.Register(user);
+            if (result.IsSuccess)
+            {
+                successfulRegister = true;
+            }
+        }
+        catch (Exception ex)
+        {
+            errorMessage = ex.Message;
+        }
+        finally
+        {
+            isLoading = false;
+        }
     }
+
+    [Inject]
+    private NavigationManager NavigationManager { get; set; }
 }

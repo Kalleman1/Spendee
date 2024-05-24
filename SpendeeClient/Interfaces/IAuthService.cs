@@ -5,7 +5,7 @@ namespace SpendeeClient.Interfaces
 {
     public interface IAuthService
     {
-        Task<User> Register(User user);
+        Task<Result<User>> Register(User user);
         Task<Result<User>> Login(User user);
     }
 }

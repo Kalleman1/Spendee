@@ -14,10 +14,19 @@ namespace SpendeeClient.Services
             _httpClient = httpClient;
         }
 
-        public async Task<User> Register(User user)
+        public async Task<Result<User>> Register(User user)
         {
             var response = await _httpClient.PostAsJsonAsync("api/users/register", user);
-            return await response.Content.ReadFromJsonAsync<User>();
+            if (response.IsSuccessStatusCode)
+            {
+                var registeredUser = await response.Content.ReadFromJsonAsync<User>();
+                return Result<User>.Success(registeredUser);
+            } 
+            else
+            {
+                var errorMessage = await response.Content.ReadAsStringAsync();
+                return Result<User>.Failure("An error occoured creating user");
+            }
         }
 
         public async Task<Result<User>> Login(User user)
