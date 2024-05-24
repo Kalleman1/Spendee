@@ -1,7 +1,8 @@
-<img src="images/spendee-logo.png" alt="Spendee Logo" width="200" height="200">
 # Spendee
 
 Spendee is a web-based expense tracker application developed using ASP.NET Core for the backend and Blazor WebAssemly for the frontend. The application allows users to track their expenses, categorize them, and view reports.
+
+<img src="images/spendee-logo.png" alt="Spendee Logo" width="200" height="200">
 
 ## Workflow statuses
 [![Build Backend](https://github.com/Kalleman1/Spendee/actions/workflows/backend-build.yml/badge.svg)](https://github.com/Kalleman1/Spendee/actions/workflows/backend-build.yml)
