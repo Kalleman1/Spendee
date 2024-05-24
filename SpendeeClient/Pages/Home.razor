@@ -1,6 +1,9 @@
 ﻿@page "/home"
+@using SpendeeClient.Models;
 
-<h3>Welcome Home!</h3>
+@inject UserState UserState
+
+<h3>Welcome Home! @UserState.CurrentUser.Name @UserState.CurrentUser.Id</h3>
 
 @code {
 
