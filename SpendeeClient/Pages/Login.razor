@@ -5,6 +5,7 @@
 @using SpendeeClient.Models;
 
 @inject IAuthService AuthService
+@inject UserState UserState
 
 <div class="login-container">
     <img src="images/SpendeeLogo.png" alt="Spendee Logo" class="logo-style" />
@@ -67,6 +68,7 @@
             var result = await AuthService.Login(user);
             if (result.IsSuccess)
             {
+                UserState.SetUser(result.Value);
                 NavigationManager.NavigateTo("/home");
             }
             else
