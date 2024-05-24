@@ -1,0 +1,31 @@
+﻿@using SpendeeClient.Models;
+
+@inject UserState UserState
+@inject NavigationManager NavigationManager
+
+<nav class="flex-column">
+    <div class="item-container">
+        <img src="/images/SpendeeLogo.png" class="logo-style-nav" />
+    </div>
+    
+
+    <a class="navbar-link @(IsActive("/dashboard") ? "active" : "")" href="/dashboard">Dashboard</a>
+    <a class="navbar-link @(IsActive("/expenses") ? "active" : "")" href="/expenses">Expenses</a>
+    <a class="navbar-link @(IsActive("/settings") ? "active" : "")" href="/settings">Settings</a>
+    <a class="navbar-link" @onclick="Logout">Logout</a>
+</nav>
+
+@code {
+    private bool IsActive(string href)
+    {
+        var uri = new Uri(NavigationManager.Uri);
+        var relativePath = uri.PathAndQuery;
+        return href.Equals(relativePath, StringComparison.OrdinalIgnoreCase);
+    }
+
+    private void Logout()
+    {
+        UserState.ClearUser();
+        NavigationManager.NavigateTo("/login");
+    }
+}

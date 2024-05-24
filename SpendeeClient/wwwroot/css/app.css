@@ -235,3 +235,46 @@ a, .btn-link {
 .custom-anchor:hover {
     cursor: pointer;
 }
+
+/* Navbar */
+
+.logo-style-nav {
+    width: 200px;
+    align-self: center;
+
+}
+
+.navbar {
+    display: block;
+    width: 250px;
+    height: 100vh;
+    position: sticky;
+    top: 0;
+    border-right: 1px solid grey;
+}
+
+.navbar-link {
+    color: black;
+    font-size: 25px;
+    font-weight: 500;
+    text-align: center;
+    display: block;
+    padding: .5rem 1rem;
+    text-decoration: none;
+    transition: color .15s ease-in-out, background-color .15s ease-in-out, border-color .15s ease-in-out, border-radius .15s ease-in-out;
+    margin: 15px;
+}
+
+    .navbar-link:hover {
+        color: white;
+        border-radius: 15px;
+        background-color: #194e6b;
+        cursor: pointer;
+    }
+
+    .navbar-link.active {
+        color: white;
+        border-radius: 15px;
+        background-color: #194e6b;
+        cursor: pointer;
+    }
