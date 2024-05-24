@@ -9,14 +9,11 @@
             CurrentUser = user;
         }
 
-        public void ClearUser(User user)
+        public void ClearUser()
         {
             CurrentUser = null;
         }
 
-        public bool IsAuthenticated()
-        {
-            return CurrentUser != null;
-        }
+        public bool IsAuthenticated => CurrentUser != null;
     }
 }

@@ -1,6 +1,18 @@
-﻿@inherits LayoutComponentBase
+﻿@using SpendeeClient.Components
+@using SpendeeClient.Models;
+@inherits LayoutComponentBase
+
+@inject UserState UserState
+@inject NavigationManager NavigationManager
 
 <div class="page">
+
+    @if (UserState.IsAuthenticated)
+    {
+        <div class="navbar">
+            <NavMenu />
+        </div>
+    }
 
     <main>
         <article class="content px-4">
@@ -8,3 +20,7 @@
         </article>
     </main>
 </div>
+
+
+@code {
+}
