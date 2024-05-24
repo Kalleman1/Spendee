@@ -1,0 +1,21 @@
+﻿@using SpendeeClient.Models;
+
+@inject UserState UserState
+@inject NavigationManager NavigationManager
+
+<nav class="flex-column">
+    <img src="/images/SpendeeLogo.png" class="logo-style"/>
+
+    <a class="navbar-link" href="/dashboard">Dashboard</a>
+    <a class="navbar-link" href="/expenses">Expenses</a>
+    <a class="navbar-link" href="/settings">Settings</a>
+    <a class="navbar-link" @onclick="Logout">Logout</a>
+</nav>
+
+@code {
+    private void Logout()
+    {
+        UserState.ClearUser();
+        NavigationManager.NavigateTo("/login");
+    }
+}
