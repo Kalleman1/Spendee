@@ -250,7 +250,7 @@ a, .btn-link {
     height: 100vh;
     position: sticky;
     top: 0;
-    border-right: 1px solid grey;
+    box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
 }
 
 .navbar-link {
