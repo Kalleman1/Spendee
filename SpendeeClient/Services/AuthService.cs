@@ -1,4 +1,5 @@
-﻿using SpendeeClient.Interfaces;
+﻿using SpendeeApi.Models;
+using SpendeeClient.Interfaces;
 using SpendeeClient.Models;
 using System.Net.Http.Json;
 
@@ -19,10 +20,19 @@ namespace SpendeeClient.Services
             return await response.Content.ReadFromJsonAsync<User>();
         }
 
-        public async Task<User> Login(User user)
+        public async Task<Result<User>> Login(User user)
         {
             var response = await _httpClient.PostAsJsonAsync("api/users/login", user);
-            return await response.Content.ReadFromJsonAsync<User>();
+            if (response.IsSuccessStatusCode)
+            {
+                var loggedInUser = await response.Content.ReadFromJsonAsync<User>();
+                return Result<User>.Success(loggedInUser);
+            }
+            else
+            {
+                var errorMessage = await response.Content.ReadAsStringAsync();
+                return Result<User>.Failure("Invalid login attempt");
+            }
         }
     }
 }

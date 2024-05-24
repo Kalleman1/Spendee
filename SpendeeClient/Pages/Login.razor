@@ -15,20 +15,35 @@
             <DataAnnotationsValidator />
             <ValidationSummary />
 
-            <div class="input-container">
-                <InputText id="email" @bind-Value="user.Email" placeholder="Email" />
+            <div class="item-container">
+                <InputText class="input" id="email" @bind-Value="user.Email" placeholder="Email" />
             </div>
-            <div class="input-container">
-                <InputText id="password" @bind-Value="user.Password" type="password" placeholder="Password" />
+            <div class="item-container">
+                <InputText class="input" id="password" @bind-Value="user.Password" type="password" placeholder="Password" />
             </div>
             
-            <div class="input-container">
-            <button class="custom-button" type="submit">Login</button>
+            @if (errorMessage != string.Empty)
+            {
+                <div class="item-container">
+                    <p class="custom-p error-message">@errorMessage</p>
+                </div>
+            }
+            
+            
+            <div class="item-container">
+                @if (isLoading)
+                {
+                    <div class="spinner"></div>
+                }
+                else
+                {
+                    <button class="custom-button" type="submit">Login</button>
+                }
             </div>
 
-            <div class="input-container">
-                <p>Dont have an account yet?</p>
-                <a onclick="@NavigateToRegister">Register!</a>
+            <div class="item-container">
+                <p class="custom-p">Dont have an account yet?</p>
+                <a class="custom-anchor" onclick="@NavigateToRegister">Register</a>
             </div>
         </EditForm>
     </div>
@@ -37,18 +52,36 @@
 
 @code {
     private User user = new User();
+    private string errorMessage;
+    private bool isLoading = false;
 
     private async Task HandleLogin()
     {
-        var loggedInUser = await AuthService.Login(user);
-        // Handle post-login actions, e.g., navigate to another page
-        if (loggedInUser != null)
+        errorMessage = string.Empty;
+        isLoading = true;
+
+        try
         {
-            NavigationManager.NavigateTo("/home");
+            // Simulate a short delay to see spinner
+            await Task.Delay(1000);
+
+            var result = await AuthService.Login(user);
+            if (result.IsSuccess)
+            {
+                NavigationManager.NavigateTo("/home");
+            }
+            else
+            {
+                errorMessage = result.Error;
+            }
         }
-        else
+        catch (Exception ex)
         {
-            // Show an error message
+            errorMessage = ex.Message;
+        }
+        finally
+        {
+            isLoading = false;
         }
     }
 
